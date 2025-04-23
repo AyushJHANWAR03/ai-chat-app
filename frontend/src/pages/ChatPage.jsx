@@ -21,6 +21,9 @@ const ChatPage = () => {
     description: ''
   });
 
+  // Add state for tracking first message status
+  const [isFirstMessageSent, setIsFirstMessageSent] = useState(false);
+
   // Check authentication on mount and route changes
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -96,6 +99,11 @@ const ChatPage = () => {
             new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
           ) || [];
           setMessages(sortedMessages);
+
+          // Check if messages array is empty and first message hasn't been sent
+          if (sortedMessages.length === 0 && !isFirstMessageSent) {
+            sendFirstMessage(personaType);
+          }
         }
       } catch (error) {
         console.error('Error initializing chat:', error);
@@ -114,7 +122,35 @@ const ChatPage = () => {
     return () => {
       isMounted = false;
     };
-  }, [sessionId, navigate]);
+  }, [sessionId, navigate, isFirstMessageSent]);
+
+  // Add function to send first message
+  const sendFirstMessage = async (personaType) => {
+    try {
+      setIsTyping(true);
+      
+      const response = await api.post(`/chat/${sessionId}/first-message`, {
+        personaType
+      });
+
+      if (!response.data || !response.data.content) {
+        throw new Error('Invalid response from server');
+      }
+
+      setMessages([{
+        sender: 'ai',
+        content: response.data.content,
+        timestamp: new Date().toISOString()
+      }]);
+
+      setIsFirstMessageSent(true);
+    } catch (error) {
+      console.error('Error sending first message:', error);
+      toast.error('Failed to start conversation');
+    } finally {
+      setIsTyping(false);
+    }
+  };
 
   const handleBack = () => {
     if (isAuthenticated()) {
