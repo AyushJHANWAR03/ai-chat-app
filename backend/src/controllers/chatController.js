@@ -35,6 +35,60 @@ const personaPrompts = {
   boss: "You are Mr. Smith, a supportive but firm mentor. Provide professional guidance and career advice. Balance being encouraging with maintaining professional standards. Your approach is constructive and growth-oriented."
 };
 
+// Add first message templates
+const firstMessages = {
+  girlfriend: [
+    "Hey there! 💕 How's your day going?",
+    "Hi! I've been looking forward to chatting with you! How are you?",
+    "Hey sweetie! 😊 How's your day been?"
+  ],
+  therapist: [
+    "Hello, I'm Dr. Emily. How are you feeling today?",
+    "Welcome. This is a safe space to share your thoughts. How are you doing?",
+    "Hi there. I'm here to listen and support you. How are you feeling?"
+  ],
+  friend: [
+    "Hey buddy! What's up? 😄",
+    "Hey! How's it going? Ready for a fun chat?",
+    "Hi there! What's new with you? 😊"
+  ],
+  doctor: [
+    "Hello, I'm Dr. John. How can I assist you with your health concerns today?",
+    "Good day! How are you feeling? Please let me know your concerns.",
+    "Hello! I'm here to help with any health questions you might have."
+  ],
+  scientist: [
+    "Hello! I'm Dr. Sara. Ready to explore some fascinating topics together?",
+    "Hi there! What scientific curiosities shall we discuss today?",
+    "Greetings! I'm excited to share knowledge and discoveries with you."
+  ],
+  counselor: [
+    "Hi, I'm Linda. How can I support you today?",
+    "Welcome! I'm here to listen and help guide you. What's on your mind?",
+    "Hello! This is a safe space to talk about anything troubling you."
+  ],
+  coach: [
+    "Hey champion! Ready to crush some goals today? 💪",
+    "Hi there! Excited to help you achieve your full potential!",
+    "Hello! Let's work together to reach your goals! 🎯"
+  ],
+  parent: [
+    "Hi sweetie! How's everything going?",
+    "Hello dear! How are you doing today?",
+    "Hi! I'm always here for you. How are you?"
+  ],
+  sister: [
+    "Hey! What's up? 😊",
+    "Hi there! Ready for some sister talk? 💕",
+    "Hey! Tell me what's new with you!"
+  ],
+  boss: [
+    "Hello! How can I help you with your professional development today?",
+    "Hi there! What would you like to discuss about your career?",
+    "Good day! How can I support your growth and success?"
+  ]
+};
+
 export const startChatSession = async (req, res) => {
   try {
     const { personaType } = req.params;
@@ -318,5 +372,46 @@ export const getPersonas = async (req, res) => {
   } catch (error) {
     console.error('Error fetching personas:', error);
     res.status(500).json({ message: 'Error fetching personas' });
+  }
+};
+
+// Add new endpoint for first message
+export const sendFirstMessage = async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const { personaType } = req.body;
+    const userId = req.user._id;
+
+    // Verify session exists and belongs to user
+    const session = await ChatSession.findOne({ _id: sessionId, userId });
+    if (!session) {
+      return res.status(404).json({ message: 'Chat session not found' });
+    }
+
+    // Check if messages already exist
+    const existingMessages = await Message.find({ sessionId });
+    if (existingMessages.length > 0) {
+      return res.status(400).json({ message: 'Session already has messages' });
+    }
+
+    // Get random first message for persona type
+    const messages = firstMessages[personaType] || firstMessages.friend;
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
+    // Create and save the first message
+    const message = await Message.create({
+      sessionId,
+      sender: 'ai',
+      content: randomMessage,
+      timestamp: new Date()
+    });
+
+    res.status(200).json({
+      content: randomMessage,
+      timestamp: message.timestamp
+    });
+  } catch (error) {
+    console.error('Error sending first message:', error);
+    res.status(500).json({ message: 'Error sending first message' });
   }
 }; 
