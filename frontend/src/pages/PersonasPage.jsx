@@ -7,23 +7,75 @@ const PersonasPage = () => {
   const navigate = useNavigate();
 
   const personas = [
-    { 
-      type: 'girlfriend', 
-      name: 'Girlfriend', 
-      description: 'A caring and supportive companion who listens and understands',
-      emoji: '💝'
+    {
+      type: 'girlfriend',
+      name: 'Ananya',
+      description: 'Playful and caring',
+      image: 'https://img.freepik.com/free-photo/love-story-young-couple-man-woman-are-touching-each-other-with-their-noses_197531-13730.jpg?semt=ais_hybrid&w=740',
+      role: 'Girlfriend'
     },
-    { 
-      type: 'therapist', 
-      name: 'Therapist', 
-      description: 'A professional guide for your thoughts and emotions',
-      emoji: '🧠'
+    {
+      type: 'therapist',
+      name: 'Dr. Emily',
+      description: 'Empathetic and supportive',
+      image: 'https://media.licdn.com/dms/image/v2/D4E03AQH6cH4yjqEysg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1686616127235?e=2147483647&v=beta&t=J1-0vWI_yztqi2ZfuV9Z9ua0schTRtEGq3GhmOK-qYY',
+      role: 'Therapist'
     },
-    { 
-      type: 'friend', 
-      name: 'Friend', 
-      description: 'A casual and fun conversation partner',
-      emoji: '😊'
+    {
+      type: 'friend',
+      name: 'Raj',
+      description: 'Casual and fun',
+      image: 'https://www.yourtango.com/sites/default/files/image_blog/your-other-half-why-every-girl-needs-that-one-best-friend.png',
+      role: 'Friend'
+    },
+    {
+      type: 'doctor',
+      name: 'Dr. John',
+      description: 'Knowledgeable and caring',
+      image: 'https://png.pngtree.com/png-clipart/20231002/original/pngtree-young-afro-professional-doctor-png-image_13227671.png',
+      role: 'Doctor'
+    },
+    {
+      type: 'scientist',
+      name: 'Dr. Sara',
+      description: 'Logical and curious',
+      image: 'https://images.ctfassets.net/cnu0m8re1exe/5z0hdZSE6gkeomcudrl1Kl/b089967c69232887e0121e9083210115/scientist.jpg',
+      role: 'Scientist'
+    },
+    {
+      type: 'counselor',
+      name: 'Linda',
+      description: 'Understanding and guiding',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSofjq4ZQkkrXDQUelysBhVHMykM2vtPRecyg&s',
+      role: 'Counselor'
+    },
+    {
+      type: 'coach',
+      name: 'Coach Mike',
+      description: 'Motivational and energetic',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6Wqzv89xw-NKAh3MsgMlPG3DTV2i8BnzoIw&s',
+      role: 'Coach'
+    },
+    {
+      type: 'parent',
+      name: 'Mom',
+      description: 'Nurturing and caring',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTARteuvZFba1QfoBm0zfJjNndksMkxECeDFg&s',
+      role: 'Parent'
+    },
+    {
+      type: 'sister',
+      name: 'Priya',
+      description: 'Funny and relatable',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkzsmodfR_lEULZOvs6arrWMjQItRapA0xYg&s',
+      role: 'Sister'
+    },
+    {
+      type: 'boss',
+      name: 'Mr. Smith',
+      description: 'Supportive but firm',
+      image: 'https://www.partysuppliesindia.com/cdn/shop/products/BOSSBABYTHEMECUTOUT-09-1.jpg?v=1735575729',
+      role: 'Boss'
     }
   ];
 
@@ -56,30 +108,97 @@ const PersonasPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
-      <div className="max-w-screen-sm mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Choose Your Chat Partner</h1>
-          <p className="text-gray-600">Select an AI persona that matches your mood</p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Modern Chat App Header */}
+      <div className="sticky top-0 z-10 bg-white shadow-sm">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-600">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="py-6">
+              <div className="flex items-center justify-center space-x-3">
+                {/* Chat Icon */}
+                <svg 
+                  className="w-8 h-8 text-white" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  />
+                </svg>
+                
+                {/* Title */}
+                <h1 className="text-3xl font-bold text-white tracking-tight">
+                  Pick Your AI Chat Buddy
+                </h1>
+              </div>
+              
+              {/* Subtitle with chat bubble design */}
+              <div className="mt-3 flex justify-center">
+                <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                  <p className="text-white/90 text-sm">
+                    Start a conversation with your perfect AI companion
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {personas.map((persona) => (
             <div
               key={persona.type}
               onClick={() => handlePersonaSelect(persona.type)}
-              className="group cursor-pointer transform transition-all duration-200 hover:scale-[1.02]"
+              className="group cursor-pointer transform transition-all duration-300 hover:scale-[1.02]"
             >
-              <div className="h-full bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-sm p-6 hover:shadow-lg transition-shadow duration-200 border border-gray-100">
-                <div className="flex items-center space-x-4 mb-4">
-                  <span className="text-4xl">{persona.emoji}</span>
-                  <h2 className="text-xl font-semibold text-gray-800">{persona.name}</h2>
+              <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                <div className="aspect-w-1 aspect-h-1 w-full">
+                  <img
+                    src={persona.image}
+                    alt={persona.name}
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                        persona.name
+                      )}&background=random&size=400`;
+                    }}
+                  />
                 </div>
-                <p className="text-gray-600 text-sm">{persona.description}</p>
-                <div className="mt-4 text-right">
-                  <span className="text-blue-500 text-sm font-medium group-hover:underline">
-                    Start Chat →
-                  </span>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-xl font-semibold text-gray-900">
+                      {persona.name}
+                    </h2>
+                    <span className="text-sm font-medium text-gray-500">
+                      {persona.role}
+                    </span>
+                  </div>
+                  <p className="text-gray-600 text-sm">
+                    {persona.description}
+                  </p>
+                  <div className="mt-4 flex items-center text-blue-600 text-sm font-medium">
+                    <span className="group-hover:underline">Start chatting</span>
+                    <svg
+                      className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>

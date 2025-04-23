@@ -14,6 +14,13 @@ const ChatPage = () => {
   const [personaType, setPersonaType] = useState('');
   const messagesEndRef = useRef(null);
 
+  // Add persona details state
+  const [personaDetails, setPersonaDetails] = useState({
+    name: '',
+    image: '',
+    description: ''
+  });
+
   // Check authentication on mount and route changes
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -56,17 +63,35 @@ const ChatPage = () => {
         const response = await api.get(`/chat/${sessionId}`);
         
         if (!response.data) {
-          throw new Error('Invalid session data received');
+          throw new Error('Invalid session data');
         }
 
         const { personaType, messages: existingMessages } = response.data;
         
         if (!personaType) {
-          throw new Error('Invalid persona type received');
+          throw new Error('Invalid persona type');
         }
+
+        // Fetch persona details
+        const personaData = {
+          girlfriend: { name: 'Ananya', description: 'Playful and caring' },
+          therapist: { name: 'Dr. Emily', description: 'Empathetic and supportive' },
+          friend: { name: 'Raj', description: 'Casual and fun' },
+          doctor: { name: 'Dr. John', description: 'Knowledgeable and caring' },
+          scientist: { name: 'Dr. Sara', description: 'Logical and curious' },
+          counselor: { name: 'Linda', description: 'Understanding and guiding' },
+          coach: { name: 'Coach Mike', description: 'Motivational and energetic' },
+          parent: { name: 'Mom', description: 'Nurturing and caring' },
+          sister: { name: 'Priya', description: 'Funny and relatable' },
+          boss: { name: 'Mr. Smith', description: 'Supportive but firm' }
+        }[personaType];
 
         if (isMounted) {
           setPersonaType(personaType);
+          setPersonaDetails({
+            ...personaData,
+            image: `https://ui-avatars.com/api/?name=${encodeURIComponent(personaData.name)}&background=random&size=128`
+          });
           const sortedMessages = existingMessages?.sort((a, b) => 
             new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
           ) || [];
@@ -149,28 +174,39 @@ const ChatPage = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-[#f0f2f5]">
-      {/* Chat Header */}
-      <div className="bg-[#008069] text-white px-4 py-3 sticky top-0 z-10">
-        <div className="max-w-3xl mx-auto flex items-center">
-          <button
-            onClick={handleBack}
-            className="p-2 hover:bg-[#ffffff1a] rounded-full transition-colors mr-2"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-              <path fillRule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clipRule="evenodd" />
-            </svg>
-          </button>
-          <h1 className="text-xl font-semibold capitalize flex-1">
-            {personaType} Chat
-          </h1>
+    <div className="flex flex-col h-screen bg-gray-100">
+      {/* Modern Chat Header */}
+      <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white sticky top-0 z-10 shadow-md">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex items-center px-4 py-3 space-x-4">
+            <button
+              onClick={handleBack}
+              className="p-2 hover:bg-white/10 rounded-full transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                <path fillRule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clipRule="evenodd" />
+              </svg>
+            </button>
+            
+            <div className="flex items-center space-x-3 flex-1">
+              <img
+                src={personaDetails.image}
+                alt={personaDetails.name}
+                className="w-10 h-10 rounded-full object-cover border-2 border-white/20"
+              />
+              <div>
+                <h1 className="text-lg font-semibold">{personaDetails.name}</h1>
+                <p className="text-sm text-white/80">{personaDetails.description}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Messages Area */}
+      {/* Messages Area with Enhanced Styling */}
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-3xl mx-auto p-4">
-          <div className="space-y-2">
+          <div className="space-y-3">
             {messages.map((message, index) => {
               const isUser = message.sender === 'user';
               const showTimestamp = index === 0 || 
@@ -181,23 +217,32 @@ const ChatPage = () => {
                 <div key={message._id || message.timestamp}>
                   {showTimestamp && (
                     <div className="flex justify-center my-4">
-                      <span className="bg-white text-gray-500 text-xs px-2 py-1 rounded">
+                      <span className="bg-white/80 backdrop-blur-sm text-gray-500 text-xs px-3 py-1 rounded-full shadow-sm">
                         {new Date(message.timestamp).toLocaleString()}
                       </span>
                     </div>
                   )}
-                  <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+                  <div 
+                    className={`flex ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`}
+                  >
+                    {!isUser && (
+                      <img
+                        src={personaDetails.image}
+                        alt={personaDetails.name}
+                        className="w-8 h-8 rounded-full mr-2 self-end"
+                      />
+                    )}
                     <div
-                      className={`max-w-[75%] rounded-lg px-4 py-2 ${
-                        isUser
-                          ? 'bg-[#d9fdd3] text-black ml-12'
-                          : 'bg-white text-black mr-12'
-                      }`}
+                      className={`group max-w-[75%] rounded-2xl px-4 py-2.5 transition-shadow duration-200 hover:shadow-md
+                        ${isUser
+                          ? 'bg-blue-500 text-white rounded-br-none'
+                          : 'bg-white text-gray-800 rounded-bl-none'
+                        }`}
                     >
                       <p className="text-[15px] leading-relaxed whitespace-pre-wrap">
                         {message.content}
                       </p>
-                      <span className="text-[11px] text-gray-500 float-right ml-2 mt-1">
+                      <span className={`text-[11px] ${isUser ? 'text-white/80' : 'text-gray-500'} float-right ml-2 mt-1`}>
                         {new Date(message.timestamp).toLocaleTimeString([], { 
                           hour: '2-digit', 
                           minute: '2-digit'
@@ -210,7 +255,12 @@ const ChatPage = () => {
             })}
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-white rounded-lg px-4 py-2 mr-12">
+                <img
+                  src={personaDetails.image}
+                  alt={personaDetails.name}
+                  className="w-8 h-8 rounded-full mr-2 self-end"
+                />
+                <div className="bg-white rounded-2xl rounded-bl-none px-4 py-3 shadow-md">
                   <div className="flex space-x-1">
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
@@ -224,21 +274,25 @@ const ChatPage = () => {
         </div>
       </div>
 
-      {/* Message Input */}
-      <div className="bg-[#f0f2f5] border-t border-gray-200 px-4 py-2">
+      {/* Enhanced Message Input */}
+      <div className="bg-white border-t border-gray-200 px-4 py-3 shadow-lg">
         <div className="max-w-3xl mx-auto">
-          <form onSubmit={handleSendMessage} className="flex space-x-2">
+          <form onSubmit={handleSendMessage} className="flex items-center space-x-3">
             <input
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Type a message"
-              className="flex-1 rounded-full border-0 bg-white px-4 py-3 text-[15px] focus:outline-none focus:ring-1 focus:ring-[#008069]"
+              placeholder="Type a message..."
+              className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-4 py-3 text-[15px] 
+                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                transition-all duration-200"
             />
             <button
               type="submit"
               disabled={!newMessage.trim() || isTyping}
-              className="bg-[#008069] text-white p-3 rounded-full hover:bg-[#006e5a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+              className="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 
+                disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200
+                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                 <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
