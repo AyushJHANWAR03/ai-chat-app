@@ -4,6 +4,23 @@ import LoginPage from './pages/LoginPage'
 import PersonasPage from './pages/PersonasPage'
 import ChatPage from './pages/ChatPage'
 import { Toaster } from 'react-hot-toast'
+import { isAuthenticated } from './utils/auth'
+
+// Protected Route component
+const ProtectedRoute = ({ children }) => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
+
+// Public Route component (redirects to /personas if already logged in)
+const PublicRoute = ({ children }) => {
+  if (isAuthenticated()) {
+    return <Navigate to="/personas" replace />;
+  }
+  return children;
+};
 
 function App() {
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
@@ -34,10 +51,38 @@ function App() {
       <Router>
         <Toaster position="top-right" />
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/personas" element={<PersonasPage />} />
-          <Route path="/chat/:sessionId" element={<ChatPage />} />
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route 
+            path="/login" 
+            element={
+              <PublicRoute>
+                <LoginPage />
+              </PublicRoute>
+            } 
+          />
+          <Route 
+            path="/personas" 
+            element={
+              <ProtectedRoute>
+                <PersonasPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/chat/:sessionId" 
+            element={
+              <ProtectedRoute>
+                <ChatPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/" 
+            element={
+              isAuthenticated() ? 
+                <Navigate to="/personas" replace /> : 
+                <Navigate to="/login" replace />
+            } 
+          />
           {/* Add other routes here */}
         </Routes>
       </Router>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { toast } from 'react-hot-toast';
+import { isAuthenticated } from '../utils/auth';
 
 const ChatPage = () => {
   const { sessionId } = useParams();
@@ -12,6 +13,28 @@ const ChatPage = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [personaType, setPersonaType] = useState('');
   const messagesEndRef = useRef(null);
+
+  // Check authentication on mount and route changes
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate('/login', { replace: true });
+      return;
+    }
+  }, [navigate]);
+
+  // Handle back button and manual URL changes
+  useEffect(() => {
+    const handlePopState = (event) => {
+      if (isAuthenticated()) {
+        navigate('/personas');
+      } else {
+        navigate('/login');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [navigate]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -44,7 +67,6 @@ const ChatPage = () => {
 
         if (isMounted) {
           setPersonaType(personaType);
-          // Sort messages by timestamp
           const sortedMessages = existingMessages?.sort((a, b) => 
             new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
           ) || [];
@@ -68,6 +90,14 @@ const ChatPage = () => {
       isMounted = false;
     };
   }, [sessionId, navigate]);
+
+  const handleBack = () => {
+    if (isAuthenticated()) {
+      navigate('/personas');
+    } else {
+      navigate('/login');
+    }
+  };
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -122,8 +152,16 @@ const ChatPage = () => {
     <div className="flex flex-col h-screen bg-[#f0f2f5]">
       {/* Chat Header */}
       <div className="bg-[#008069] text-white px-4 py-3 sticky top-0 z-10">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-xl font-semibold capitalize">
+        <div className="max-w-3xl mx-auto flex items-center">
+          <button
+            onClick={handleBack}
+            className="p-2 hover:bg-[#ffffff1a] rounded-full transition-colors mr-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+              <path fillRule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clipRule="evenodd" />
+            </svg>
+          </button>
+          <h1 className="text-xl font-semibold capitalize flex-1">
             {personaType} Chat
           </h1>
         </div>
