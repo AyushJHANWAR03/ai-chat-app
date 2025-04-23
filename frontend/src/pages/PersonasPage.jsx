@@ -18,7 +18,7 @@ const PersonasPage = () => {
       type: 'therapist',
       name: 'Dr. Emily',
       description: 'Empathetic and supportive',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuoufWmzgDE8SOLJiSAbQ8-6ABJfnQw15DBg&s',
+      image: 'https://assets.theinnerhour.com/bloguploads/shutterstock_21011328011667391753185.jpg',
       role: 'Therapist'
     },
     {
