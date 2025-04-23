@@ -11,7 +11,7 @@ const PersonasPage = () => {
       type: 'girlfriend',
       name: 'Ananya',
       description: 'Playful and caring',
-      image: 'https://img.freepik.com/free-photo/love-story-young-couple-man-woman-are-touching-each-other-with-their-noses_197531-13730.jpg?semt=ais_hybrid&w=740',
+      image: 'https://www.stylecraze.com/wp-content/uploads/2021/08/61-Things-To-Do-To-Make-Your-Girlfriend-Happy_1200px.jpg.webp',
       role: 'Girlfriend'
     },
     {
@@ -159,31 +159,36 @@ const PersonasPage = () => {
               className="group cursor-pointer transform transition-all duration-300 hover:scale-[1.02]"
             >
               <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-                <div className="aspect-w-1 aspect-h-1 w-full">
+                {/* Image Container with Fixed Aspect Ratio */}
+                <div className="relative pt-[100%]">
                   <img
                     src={persona.image}
                     alt={persona.name}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     onError={(e) => {
                       e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
                         persona.name
                       )}&background=random&size=400`;
                     }}
                   />
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
+
+                {/* Content Section */}
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <h2 className="text-xl font-semibold text-gray-900">
                       {persona.name}
                     </h2>
-                    <span className="text-sm font-medium text-gray-500">
+                    <span className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
                       {persona.role}
                     </span>
                   </div>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 text-sm mb-4">
                     {persona.description}
                   </p>
-                  <div className="mt-4 flex items-center text-blue-600 text-sm font-medium">
+                  <div className="flex items-center text-blue-600 text-sm font-medium">
                     <span className="group-hover:underline">Start chatting</span>
                     <svg
                       className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform"

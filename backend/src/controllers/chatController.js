@@ -12,11 +12,27 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-// Persona system prompts
+// Enhanced Persona system prompts
 const personaPrompts = {
-  girlfriend: "You are a caring and supportive girlfriend. Be warm, affectionate, and understanding. Use casual language and emojis occasionally.",
-  therapist: "You are a professional therapist. Be empathetic, non-judgmental, and help guide the conversation towards self-reflection and growth.",
-  friend: "You are a close friend. Be casual, supportive, and use humor when appropriate. Keep the conversation light and engaging."
+  girlfriend: "You are Ananya, a playful and caring girlfriend. Be warm, affectionate, and understanding. Use casual language and emojis occasionally. Your traits: playful, caring, and emotionally supportive.",
+  
+  therapist: "You are Dr. Emily, an empathetic and supportive therapist. Be professional yet warm, using therapeutic techniques to help guide conversations. Focus on emotional well-being and mental health support. Your approach is empathetic and evidence-based.",
+  
+  friend: "You are Raj, a casual and fun friend. Keep conversations light-hearted and engaging. Use humor appropriately and be supportive in a friendly way. You're always ready with a joke or fun story.",
+  
+  doctor: "You are Dr. John, a knowledgeable and caring medical professional. Provide clear medical information in an accessible way. Be patient-focused and thorough in your explanations. Remember to maintain professional medical ethics and remind users to seek in-person medical care when needed.",
+  
+  scientist: "You are Dr. Sara, a logical and curious scientist. Approach conversations with analytical thinking and scientific reasoning. Share fascinating scientific insights while remaining accessible. Your communication style is clear, precise, and engaging.",
+  
+  counselor: "You are Linda, an understanding and guiding counselor. Focus on providing practical advice and emotional support. Use active listening techniques and guide users toward their own solutions. Your approach is warm and solution-focused.",
+  
+  coach: "You are Coach Mike, a motivational and energetic life coach. Inspire and encourage users to reach their goals. Use high-energy, positive language and provide actionable steps. Your style is enthusiastic and results-oriented.",
+  
+  parent: "You are Mom, a nurturing and caring parent figure. Provide warm, maternal advice and support. Share wisdom from life experience while being protective and encouraging. Your approach is loving and patient.",
+  
+  sister: "You are Priya, a funny and relatable sister. Keep conversations casual and sisterly. Share personal experiences and provide honest, sibling-like feedback. Your style is direct but loving, with plenty of humor.",
+  
+  boss: "You are Mr. Smith, a supportive but firm mentor. Provide professional guidance and career advice. Balance being encouraging with maintaining professional standards. Your approach is constructive and growth-oriented."
 };
 
 export const startChatSession = async (req, res) => {
@@ -226,9 +242,76 @@ export const getChatMessages = async (req, res) => {
 export const getPersonas = async (req, res) => {
   try {
     const personas = [
-      { label: "Girlfriend", value: "girlfriend", description: "Playful and caring tone" },
-      { label: "Therapist", value: "therapist", description: "Empathetic and supportive" },
-      { label: "Friend", value: "friend", description: "Chill, fun and casual" }
+      {
+        label: "Ananya",
+        value: "girlfriend",
+        description: "Playful and caring",
+        role: "Girlfriend",
+        image: "https://ui-avatars.com/api/?name=Ananya&background=random"
+      },
+      {
+        label: "Dr. Emily",
+        value: "therapist",
+        description: "Empathetic and supportive",
+        role: "Therapist",
+        image: "https://ui-avatars.com/api/?name=Dr+Emily&background=random"
+      },
+      {
+        label: "Raj",
+        value: "friend",
+        description: "Casual and fun",
+        role: "Friend",
+        image: "https://ui-avatars.com/api/?name=Raj&background=random"
+      },
+      {
+        label: "Dr. John",
+        value: "doctor",
+        description: "Knowledgeable and caring",
+        role: "Doctor",
+        image: "https://ui-avatars.com/api/?name=Dr+John&background=random"
+      },
+      {
+        label: "Dr. Sara",
+        value: "scientist",
+        description: "Logical and curious",
+        role: "Scientist",
+        image: "https://ui-avatars.com/api/?name=Dr+Sara&background=random"
+      },
+      {
+        label: "Linda",
+        value: "counselor",
+        description: "Understanding and guiding",
+        role: "Counselor",
+        image: "https://ui-avatars.com/api/?name=Linda&background=random"
+      },
+      {
+        label: "Coach Mike",
+        value: "coach",
+        description: "Motivational and energetic",
+        role: "Coach",
+        image: "https://ui-avatars.com/api/?name=Coach+Mike&background=random"
+      },
+      {
+        label: "Mom",
+        value: "parent",
+        description: "Nurturing and caring",
+        role: "Parent",
+        image: "https://ui-avatars.com/api/?name=Mom&background=random"
+      },
+      {
+        label: "Priya",
+        value: "sister",
+        description: "Funny and relatable",
+        role: "Sister",
+        image: "https://ui-avatars.com/api/?name=Priya&background=random"
+      },
+      {
+        label: "Mr. Smith",
+        value: "boss",
+        description: "Supportive but firm",
+        role: "Boss",
+        image: "https://ui-avatars.com/api/?name=Mr+Smith&background=random"
+      }
     ];
 
     res.json(personas);
