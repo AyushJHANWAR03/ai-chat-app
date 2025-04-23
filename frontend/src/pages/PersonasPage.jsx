@@ -18,14 +18,14 @@ const PersonasPage = () => {
       type: 'therapist',
       name: 'Dr. Emily',
       description: 'Empathetic and supportive',
-      image: 'https://media.licdn.com/dms/image/v2/D4E03AQH6cH4yjqEysg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1686616127235?e=2147483647&v=beta&t=J1-0vWI_yztqi2ZfuV9Z9ua0schTRtEGq3GhmOK-qYY',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuoufWmzgDE8SOLJiSAbQ8-6ABJfnQw15DBg&s',
       role: 'Therapist'
     },
     {
       type: 'friend',
       name: 'Raj',
       description: 'Casual and fun',
-      image: 'https://www.yourtango.com/sites/default/files/image_blog/your-other-half-why-every-girl-needs-that-one-best-friend.png',
+      image: 'https://static-cdn.toi-media.com/www/uploads/2024/08/E128C42A-7A30-42A4-B49E-DA2617B65249DSCF9042.jpeg',
       role: 'Friend'
     },
     {
@@ -46,28 +46,28 @@ const PersonasPage = () => {
       type: 'counselor',
       name: 'Linda',
       description: 'Understanding and guiding',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSofjq4ZQkkrXDQUelysBhVHMykM2vtPRecyg&s',
+      image: 'https://media.craiyon.com/2025-04-08/reOm_LVARq2sn3IGknAcVA.webp',
       role: 'Counselor'
     },
     {
       type: 'coach',
       name: 'Coach Mike',
       description: 'Motivational and energetic',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6Wqzv89xw-NKAh3MsgMlPG3DTV2i8BnzoIw&s',
+      image: 'https://cdn.pixabay.com/photo/2023/11/19/18/43/ai-generated-8399592_1280.png',
       role: 'Coach'
     },
     {
       type: 'parent',
       name: 'Mom',
       description: 'Nurturing and caring',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTARteuvZFba1QfoBm0zfJjNndksMkxECeDFg&s',
+      image: 'https://img.etimg.com/thumb/width-1200,height-900,imgsize-25714,resizemode-75,msid-115961082/news/science/ai-mother-meet-kavya-mehra-indias-first-ai-mom-influencer.jpg',
       role: 'Parent'
     },
     {
       type: 'sister',
       name: 'Priya',
       description: 'Funny and relatable',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkzsmodfR_lEULZOvs6arrWMjQItRapA0xYg&s',
+      image: 'https://cdn.goenhance.ai/user/2024/07/19/c0c1400b-abc2-4541-a849-a7e4f361d28d_0.jpg',
       role: 'Sister'
     },
     {
