@@ -8,25 +8,35 @@ import { Toaster } from 'react-hot-toast'
 function App() {
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
+  console.log('Environment:', import.meta.env.MODE);
+  console.log('Base URL:', import.meta.env.VITE_API_URL);
+  
   if (!clientId) {
+    console.error('Google Client ID is missing. Please check your .env file.');
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white p-8 rounded-lg shadow-md">
           <h1 className="text-2xl font-bold text-red-600">Error: Google Client ID is missing</h1>
           <p className="mt-2">Please check your .env file and make sure VITE_GOOGLE_CLIENT_ID is set correctly.</p>
+          <p className="mt-2 text-gray-600">Current environment: {import.meta.env.MODE}</p>
         </div>
       </div>
     )
   }
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>
+    <GoogleOAuthProvider 
+      clientId={clientId}
+      onScriptLoadError={(err) => {
+        console.error('Google OAuth script failed to load:', err);
+      }}
+    >
       <Router>
         <Toaster position="top-right" />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/personas" element={<PersonasPage />} />
-          <Route path="/chat/:personaType" element={<ChatPage />} />
+          <Route path="/chat/:sessionId" element={<ChatPage />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
           {/* Add other routes here */}
         </Routes>
