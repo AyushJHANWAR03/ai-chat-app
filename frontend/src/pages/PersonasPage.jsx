@@ -11,7 +11,7 @@ const PersonasPage = () => {
       type: 'girlfriend',
       name: 'Ananya',
       description: 'Playful and caring',
-      image: 'https://www.stylecraze.com/wp-content/uploads/2021/08/61-Things-To-Do-To-Make-Your-Girlfriend-Happy_1200px.jpg.webp',
+      image: 'https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/67363257f3ab95001dd5daba.png',
       role: 'Girlfriend'
     },
     {
@@ -81,67 +81,29 @@ const PersonasPage = () => {
 
   const handlePersonaSelect = async (personaType) => {
     try {
-      console.log('Starting chat session for persona:', personaType);
-      // First try to get an existing session
+      const selectedPersona = personas.find(p => p.type === personaType);
+      localStorage.setItem("selectedPersona", JSON.stringify(selectedPersona));
+
       const response = await api.post(`/chat/${personaType}/start`);
-      console.log('Session response:', response.data);
-      
-      if (!response.data || !response.data._id) {
-        console.error('Invalid session response:', response.data);
-        throw new Error('Invalid session ID received from server');
-      }
-      
       const sessionId = response.data._id;
-      console.log('Navigating to session:', sessionId);
-      
-      // Ensure we have a valid sessionId before navigating
-      if (sessionId) {
-        // Navigate to the chat page with the session ID
-        navigate(`/chat/${sessionId}`, { replace: true });
-      } else {
-        throw new Error('No session ID received');
-      }
+      if (sessionId) navigate(`/chat/${sessionId}`, { replace: true });
     } catch (error) {
-      console.error('Error starting chat session:', error);
-      toast.error(error.response?.data?.message || 'Failed to start chat session. Please try again.');
+      console.error('Error starting chat:', error);
+      toast.error('Failed to start chat session.');
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Modern Chat App Header */}
+      {/* Gradient Header */}
       <div className="sticky top-0 z-10 bg-white shadow-sm">
         <div className="bg-gradient-to-r from-blue-500 to-blue-600">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="py-6">
-              <div className="flex items-center justify-center space-x-3">
-                {/* Chat Icon */}
-                <svg 
-                  className="w-8 h-8 text-white" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                  />
-                </svg>
-                
-                {/* Title */}
-                <h1 className="text-3xl font-bold text-white tracking-tight">
-                  Pick Your AI Chat Buddy
-                </h1>
-              </div>
-              
-              {/* Subtitle with chat bubble design */}
+            <div className="py-6 text-center">
+              <h1 className="text-3xl font-bold text-white">Choose Your AI Persona</h1>
               <div className="mt-3 flex justify-center">
                 <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                  <p className="text-white/90 text-sm">
-                    Start a conversation with your perfect AI companion
-                  </p>
+                  <p className="text-white/90 text-sm">Pick someone to talk to—your mood, your vibe</p>
                 </div>
               </div>
             </div>
@@ -149,62 +111,36 @@ const PersonasPage = () => {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {/* Grid of Personas */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {personas.map((persona) => (
             <div
               key={persona.type}
               onClick={() => handlePersonaSelect(persona.type)}
-              className="group cursor-pointer transform transition-all duration-300 hover:scale-[1.02]"
+              className="cursor-pointer bg-white rounded-2xl shadow hover:shadow-lg transition p-4 group"
             >
-              <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-                {/* Image Container with Fixed Aspect Ratio */}
-                <div className="relative pt-[100%]">
-                  <img
-                    src={persona.image}
-                    alt={persona.name}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    onError={(e) => {
-                      e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                        persona.name
-                      )}&background=random&size=400`;
-                    }}
-                  />
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative w-full aspect-square overflow-hidden rounded-xl">
+                <img
+                  src={persona.image}
+                  alt={persona.name}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  onError={(e) => {
+                    e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(persona.name)}&background=random&size=400`;
+                  }}
+                />
+              </div>
+              <div className="mt-4 space-y-1">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-semibold">{persona.name}</h2>
+                  <span className="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded-full">
+                    {persona.role}
+                  </span>
                 </div>
-
-                {/* Content Section */}
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-xl font-semibold text-gray-900">
-                      {persona.name}
-                    </h2>
-                    <span className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                      {persona.role}
-                    </span>
-                  </div>
-                  <p className="text-gray-600 text-sm mb-4">
-                    {persona.description}
-                  </p>
-                  <div className="flex items-center text-blue-600 text-sm font-medium">
-                    <span className="group-hover:underline">Start chatting</span>
-                    <svg
-                      className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
-                </div>
+                <p className="text-sm text-gray-600">{persona.description}</p>
+                <p className="text-blue-600 text-sm font-medium mt-2 group-hover:underline">
+                  Start chatting &rarr;
+                </p>
               </div>
             </div>
           ))}
@@ -214,4 +150,4 @@ const PersonasPage = () => {
   );
 };
 
-export default PersonasPage; 
+export default PersonasPage;
