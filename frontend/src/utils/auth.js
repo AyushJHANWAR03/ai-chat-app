@@ -24,16 +24,25 @@ export const validateToken = async () => {
     return response.status === 200;
   } catch (error) {
     console.error('Token validation error:', error);
-    removeToken();
+    if (error.response?.status === 401) {
+      removeToken();
+    }
     return false;
   }
 };
 
 export const checkAndRedirect = async () => {
-  const isValid = await validateToken();
-  if (!isValid) {
+  try {
+    const isValid = await validateToken();
+    if (!isValid) {
+      removeToken();
+      // Don't redirect here, let the component handle it
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error('Auth check error:', error);
     removeToken();
-    window.location.href = '/login';
+    return false;
   }
-  return isValid;
 }; 

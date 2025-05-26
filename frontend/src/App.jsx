@@ -5,17 +5,44 @@ import PersonasPage from './pages/PersonasPage'
 import ChatPage from './pages/ChatPage'
 import { Toaster } from 'react-hot-toast'
 import { isAuthenticated, checkAndRedirect } from './utils/auth'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isValid, setIsValid] = useState(false);
+
   useEffect(() => {
-    checkAndRedirect();
+    const validateAuth = async () => {
+      try {
+        const valid = await checkAndRedirect();
+        setIsValid(valid);
+      } catch (error) {
+        console.error('Auth validation error:', error);
+        setIsValid(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    validateAuth();
   }, []);
 
-  if (!isAuthenticated()) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin border-t-4 border-blue-500 border-solid rounded-full h-12 w-12 mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isValid) {
     return <Navigate to="/login" replace />;
   }
+
   return children;
 };
 
