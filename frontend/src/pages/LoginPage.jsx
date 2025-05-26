@@ -17,7 +17,7 @@ const LoginPage = () => {
       const { sub: googleId, email, name, picture } = decoded;
 
       // Send to backend
-      const response = await axios.post('https://ai-chat-app-8cbv.onrender.com/api/auth/google', {
+      const response = await axios.post('https://api.personalchatbot.online/api/auth/google', {
         googleId,
         email,
         name,
