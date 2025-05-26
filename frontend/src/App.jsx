@@ -4,10 +4,15 @@ import LoginPage from './pages/LoginPage'
 import PersonasPage from './pages/PersonasPage'
 import ChatPage from './pages/ChatPage'
 import { Toaster } from 'react-hot-toast'
-import { isAuthenticated } from './utils/auth'
+import { isAuthenticated, checkAndRedirect } from './utils/auth'
+import { useEffect } from 'react'
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
+  useEffect(() => {
+    checkAndRedirect();
+  }, []);
+
   if (!isAuthenticated()) {
     return <Navigate to="/login" replace />;
   }
