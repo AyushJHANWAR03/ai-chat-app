@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { toast } from 'react-hot-toast';
 import { isAuthenticated } from '../utils/auth';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const ChatPage = () => {
   const { sessionId } = useParams();
@@ -118,7 +119,13 @@ const ChatPage = () => {
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-blue-600 text-white p-4 flex items-center">
-        <button onClick={handleBack} className="mr-4">←</button>
+        <button
+          onClick={handleBack}
+          className="mr-4 text-white text-2xl font-semibold hover:opacity-80 transition-opacity"
+          aria-label="Back"
+        >
+          <FaArrowLeft />
+        </button>
         <img
           src={personaDetails?.image}
           alt="avatar"
